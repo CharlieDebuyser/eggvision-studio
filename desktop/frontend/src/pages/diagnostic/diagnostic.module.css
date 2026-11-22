@@ -1,0 +1,27 @@
+.hero { display: flex; align-items: center; gap: var(--sp-3); }
+.heroIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r-lg);
+  background: var(--neutral-soft);
+  color: var(--neutral);
+}
+.heroIcon[data-tone='success'] { background: var(--success-soft); color: var(--success); }
+.heroIcon[data-tone='info'] { background: var(--info-soft); color: var(--info); }
+.heroTitle { font-weight: var(--fw-semibold); font-size: var(--fs-lg); }
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--sp-4);
+  align-items: start;
+}
+.packages > div { max-height: 320px; overflow: auto; }
+.logPanel { margin-top: var(--sp-4); }
+
+@media (max-width: 1200px) {
+  .grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}

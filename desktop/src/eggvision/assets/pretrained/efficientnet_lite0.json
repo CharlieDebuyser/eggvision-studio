@@ -1,0 +1,11 @@
+{
+  "arch": "efficientnet_lite0",
+  "timm_version": "1.0.31",
+  "source": "timm/efficientnet_lite0.ra_in1k",
+  "tag": "ra_in1k",
+  "num_features": 1280,
+  "n_params": 3413073,
+  "sha256": "7928fe60572aa7cef5209ba084173f90c47678be928a23fcc7b5477faf6d567a",
+  "size_bytes": 13678728,
+  "fetched_at": "2026-11-20T16:25:37+00:00"
+}

@@ -1,0 +1,112 @@
+/* Module Détection et suivi — s'appuie exclusivement sur les jetons du socle. */
+
+/* Mises en page */
+.splitLayout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: var(--sp-4); align-items: start; }
+.mainCol { min-width: 0; }
+.sideCol { position: sticky; top: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-4); min-width: 0; }
+.sideColWide { position: sticky; top: var(--sp-4); min-width: 0; width: 440px; }
+.splitLayout:has(.sideColWide) { grid-template-columns: minmax(0, 1fr) 440px; }
+.detectorLayout { display: grid; grid-template-columns: 280px minmax(0, 1fr) 300px; gap: var(--sp-4); align-items: start; }
+
+@media (max-width: 1240px) {
+  .splitLayout, .splitLayout:has(.sideColWide), .detectorLayout { grid-template-columns: minmax(0, 1fr); }
+  .sideCol, .sideColWide { position: static; width: auto; }
+}
+
+/* Image + calque SVG */
+.stagePad { padding: var(--sp-3); }
+.stage {
+  position: relative;
+  width: 100%;
+  background: var(--surface-3);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  user-select: none;
+  touch-action: none;
+}
+.stageImg, .stageMask, .stageSvg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.stageImg { object-fit: fill; }
+.stageMask { opacity: 0.45; mix-blend-mode: screen; image-rendering: pixelated; pointer-events: none; }
+.stageSvg { overflow: visible; }
+.stageFooter { padding: var(--sp-3); border-top: 1px solid var(--border); }
+
+.laneLabel { font-weight: var(--fw-semibold); paint-order: stroke; stroke: var(--surface); stroke-width: 3px; pointer-events: none; }
+.arrow { stroke: var(--accent); opacity: 0.85; }
+.handle { fill: var(--surface); stroke-width: 2px; cursor: grab; }
+.ruler line { stroke: var(--accent); }
+.ruler circle { fill: var(--accent-soft); stroke: var(--accent); }
+.box { fill: transparent; stroke: var(--info); stroke-width: 2px; }
+.boxSelected { fill: var(--accent-soft); fill-opacity: 0.35; stroke: var(--accent); stroke-width: 3px; }
+
+/* Choix du lot et de l'image */
+.picker { display: grid; grid-template-columns: minmax(200px, 320px) minmax(0, 1fr); gap: var(--sp-3) var(--sp-4); align-items: end; }
+.pickerCompact { grid-template-columns: minmax(0, 1fr); }
+.frameNav { display: flex; align-items: center; gap: var(--sp-1); }
+.frameSlider { flex: 1; min-width: 120px; }
+
+/* Calibration */
+.laneList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.laneList li { display: flex; align-items: center; gap: var(--sp-2); padding: 2px var(--sp-2); border-radius: var(--r-sm); }
+.laneSelected { background: var(--surface-2); }
+.laneSwatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.linkButton { background: none; border: 0; padding: 0; color: var(--text); font: inherit; cursor: pointer; }
+.linkButton:hover { text-decoration: underline; }
+
+/* Réglages */
+.previewStats { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); padding: 0 var(--sp-3) var(--sp-3); min-height: 32px; }
+.paramsHeader { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); padding: var(--sp-2) var(--sp-4); border-bottom: 1px solid var(--border); }
+.paramsBody { display: flex; flex-direction: column; gap: var(--sp-4); padding: var(--sp-4); max-height: calc(100vh - 300px); overflow-y: auto; }
+.paramGroup { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-3); }
+.paramGroup legend { font-size: var(--fs-xs); font-weight: var(--fw-semibold); text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-subtle); margin-bottom: var(--sp-2); }
+.changedDot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+/* Traitement */
+.nameCell { display: flex; flex-direction: column; min-width: 0; }
+.pagination { display: flex; justify-content: flex-end; padding: var(--sp-3); border-top: 1px solid var(--border); }
+.plainList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-1); }
+.resultList { list-style: none; margin: var(--sp-3) 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-1); }
+.resultList li { display: flex; align-items: center; gap: var(--sp-3); min-width: 0; }
+
+/* Pistes */
+.toolbar { display: flex; flex-wrap: wrap; gap: var(--sp-3) var(--sp-4); align-items: end; }
+.statRow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-3); }
+@media (max-width: 1240px) { .statRow { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.flagCell { display: inline-flex; flex-wrap: wrap; gap: var(--sp-1); }
+.mosaic { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--sp-1); }
+.mosaicItem, .mosaicItemActive {
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--r-sm);
+  background: var(--surface-3);
+  cursor: pointer;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+.mosaicItemActive { border-color: var(--accent); }
+.mosaicItem img, .mosaicItemActive img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Détecteur entraînable */
+.annAdd { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-2); padding: var(--sp-3); border-bottom: 1px solid var(--border); }
+.annList { list-style: none; margin: 0; padding: var(--sp-2); display: flex; flex-direction: column; gap: 2px; max-height: 520px; overflow-y: auto; }
+.annItem, .annItemActive {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0 var(--sp-2);
+  align-items: center;
+  text-align: left;
+  padding: var(--sp-2);
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  background: none;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.annAdd > :first-child { grid-column: 1 / -1; }
+.annItem:hover { background: var(--surface-2); }
+.annItemActive { background: var(--surface-2); border-color: var(--accent); }
+.annItem > :first-child, .annItemActive > :first-child { grid-column: 1 / -1; }
+.detList { list-style: none; margin: 0; padding: 0; }
+.detList li { display: flex; flex-direction: column; gap: var(--sp-1); padding: var(--sp-3); border-top: 1px solid var(--border); }
+.detList li:first-child { border-top: 0; }

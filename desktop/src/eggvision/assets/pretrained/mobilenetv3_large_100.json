@@ -1,0 +1,11 @@
+{
+  "arch": "mobilenetv3_large_100",
+  "timm_version": "1.0.31",
+  "source": "timm/mobilenetv3_large_100.ra_in1k",
+  "tag": "ra_in1k",
+  "num_features": 960,
+  "n_params": 4226478,
+  "sha256": "a5562e34ec0c1149c1d59c6ed50f71f139b10a95528ed4adff7975bf1af3f243",
+  "size_bytes": 16933928,
+  "fetched_at": "2026-11-20T16:25:36+00:00"
+}

@@ -1,0 +1,32 @@
+# Service systemd de l'agent de capture EggVision (Raspberry Pi 5).
+# Installé par pi-agent/install.sh dans /etc/systemd/system/eggvision-agent.service.
+# Réglages : /etc/default/eggvision-agent (variables EGGVISION_AGENT_*).
+
+[Unit]
+Description=EggVision — agent de capture (caméra Global Shutter)
+Documentation=file:///opt/eggvision-agent/src/docs/pi-agent.md
+Wants=network-online.target
+After=network-online.target local-fs.target
+# Ajouté par install.sh quand le stockage est sur un SSD monté :
+# RequiresMountsFor=@STORAGE@
+
+[Service]
+Type=simple
+User=eggvision
+Group=eggvision
+SupplementaryGroups=video render
+EnvironmentFile=-/etc/default/eggvision-agent
+ExecStart=/opt/eggvision-agent/venv/bin/eggvision-agent
+# Arrêt propre : SIGTERM → le lot en cours est clos (statut « interrompu »), la caméra libérée.
+KillSignal=SIGTERM
+TimeoutStopSec=60
+Restart=always
+RestartSec=3
+# Priorité à la capture face aux autres processus du Pi.
+Nice=-5
+IOSchedulingClass=best-effort
+IOSchedulingPriority=0
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

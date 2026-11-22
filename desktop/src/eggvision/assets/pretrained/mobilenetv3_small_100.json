@@ -1,0 +1,11 @@
+{
+  "arch": "mobilenetv3_small_100",
+  "timm_version": "1.0.31",
+  "source": "timm/mobilenetv3_small_100.lamb_in1k",
+  "tag": "lamb_in1k",
+  "num_features": 576,
+  "n_params": 1530002,
+  "sha256": "477feb954fc9c08fc3cc9adf1c53c58eac91a4e3507c2a5875b98eeee39a5bfa",
+  "size_bytes": 6141832,
+  "fetched_at": "2026-11-20T16:25:34+00:00"
+}
